@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+html(lang="en")
+  include ../includes/adminheader.pug 
+  body
+    include ../includes/nav.pug 
+    main(role="main" class="container")
+      h2(class="page-title") Edit page
+      a(href="/admin/" class="btn btn-secondary") Back to all pages
+      br
+      br
+      form(action="/admin/edit-page", method="post")
+        div(class="input-container")
+          label(for="title") Title
+          input(type="text" class="form-control" name="title" value=titlePage placeholder="Page title") 
+        div(class="input-container")
+          label(for="slug") Slug
+          input(type="text" class="form-control" name="slug" value=slug placeholder="Page slug" readonly="readonly") 
+        div(class="input-container")
+          label(for="content") Content
+          textarea(type="text" cols="30" rows="10" class="form-control" name="content" placeholder="Page content" id='ta') #{content}
+        button(type="submit" class="btn btn-primary") Submit
+    include ../includes/adminfooter.pug 
