@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+html(lang="en")
+  include ../includes/adminheader.pug
+  style. 
+    .ui-sortable-helper{
+      border: 1px solid rgba(0,0,0,.3);
+    }
+    .ui-sortable-handle{
+      cursor: pointer;
+    }
+  body 
+    include ../includes/nav.pug
+    main(role="main", class="container")
+      h2(class="page-title") List of categories
+      a(href="/categories/add-category", class="btn btn-primary") Add a new category
+      br
+      br
+      table.table.table-stripped
+        thead
+          tr
+            th Category
+            th Edit
+            th Delete
+        tbody
+          each cat in categories
+              tr
+                td= cat.title
+                td
+                  a(href="/categories/edit-category/"+cat.slug, class="btn btn-info") Edit
+                td
+                  form(action="/categories/delete-category/"+cat.id + "?_method=DELETE", method="post")
+                    button(type="submit", class="btn btn-danger delete-category") Delete
+          
+    include ../includes/adminfooter.pug
+    script(src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js")

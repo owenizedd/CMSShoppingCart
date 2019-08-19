@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+html(lang="en")
+  include ../includes/adminheader.pug
+  body
+    include ../includes/nav.pug
+    
+    main(role="main" class="container")
+      h2(class="page-title") Add a category
+      a(href="/categories" class="btn btn-secondary") Back to all categories
+      br
+      br
+      form(action="/categories/add-category", method="post")
+        div(class="input-container")
+          label(for="title") Category
+          input(type="text" class="form-control" name="title" value=category placeholder="Page title") 
+        button(type="submit" class="btn btn-primary" style="margin-top: 10px") Submit
+    include ../includes/adminfooter.pug

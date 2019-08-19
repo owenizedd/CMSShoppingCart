@@ -43,9 +43,9 @@ router.post('/add-page', [
       req.body.slug = req.body.slug.replace(/\s+/g, '-').toLowerCase() || req.body.title.replace(/\s+/g, '-').toLowerCase();
       Page.findOne({slug: req.body.slug}, (err, row)=>{
         if(page){
-          req.flash('danger', 'Page slug exist, choose another');
+          req.flash('error', 'Page slug exist, choose another');
           res.render('admin/add_page', {
-            title: req.body.title,
+            titlePage: req.body.title,
             slug: req.body.slug,
             content: req.body.content
           });
@@ -60,7 +60,8 @@ router.post('/add-page', [
 
           page.save((err)=>{
             if (err) return console.log(err);
-            else req.flash('success', 'Page added'), res.redirect('/admin/');
+            req.flash('info', 'Page added');
+            res.redirect('/admin/');
             console.log("Done");
           })
         }
@@ -92,7 +93,7 @@ router.get('/edit-page/:slug', (req,res)=>{
       });
     }
     else{
-      req.flash('danger', 'Page slug exist, choose another');
+      req.flash('error', 'Page slug exist, choose another');
       res.redirect('/admin/');
     }
   });
@@ -109,14 +110,15 @@ router.post('/edit-page', [
       res.render(`admin/edit_page`, {
         errors: errors.errors,
         titlePage: req.body.title,
-        slug: req.body.slug,
+        slug: req.body.title.replace(/\s+/g, '-').toLowerCase(),
         content: req.body.content
       });
     }
     else{
-      Page.updateOne({ slug: req.body.slug}, { $set: {title: req.body.title, content: req.body.content}}, (err,raw)=>{
+      
+      Page.updateOne({ slug: req.body.slug}, { $set: {title: req.body.title, content: req.body.content, slug: req.body.title.replace(/\s+/g, '-').toLowerCase()}}, (err,raw)=>{
         if (err) throw err;
-        req.flash("message", "Page edited.");
+        req.flash("info", "Page edited.");
         res.redirect('/admin/');
       });
     }
@@ -127,11 +129,11 @@ router.delete('/delete-page/:id', (req,res)=> {
   console.log(req.params.id);
   Page.deleteOne({_id: req.params.id}, (err)=>{
     if (err){
-      req.flash("message", "Can't delete the page.");
+      req.flash("error", "Can't delete the page.");
       res.redirect('/admin/');
     }
     else{
-      req.flash("message", "Page deleted.");
+      req.flash("info", "Page deleted.");
       res.redirect("/admin/");
     }
   })

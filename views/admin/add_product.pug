@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+html(lang="en")
+  include ../includes/adminheader.pug
+  body
+    include ../includes/nav.pug
+    
+    main(role="main" class="container")
+      h2(class="page-title") Add a product
+      a(href="/products" class="btn btn-secondary") Back to all product
+      br
+      br
+      form(action="/products/add-product", method="post", enctype="multipart/form-data")
+        div(class="form-group")
+          label(for="title") Title
+          input(type="text" class="form-control" name="title" value=title placeholder="Product Title") 
+        div(class="form-group")
+          label(for="description") Description
+          textarea(class="form-control" cols="30" rows="10" name="description" id='ta' value=description placeholder="Product Description") #{description} 
+        div(class="form-group")
+          label(for="price") Price 
+          input(type="text" class="form-control" name="price" value=price placeholder="Product Price")
+        div.form-group
+          label(for="category") Category
+          select(name="category", class="form-control")
+            each cat in categories
+              option(value=cat.slug)= cat.title
+        div.form-group
+          label(for="image") Image 
+          div.form-control
+            input(name="image", type="file", id="img")
+            img(src="#", id="imgPreview", alt="")
+        button(type="submit" class="btn btn-primary") Submit
+    include ../includes/adminfooter.pug
+
+    script.
+      function readUrl(input){
+        if (input.files && input.files[0]){
+          var reader = new FileReader();
+          reader.onload = function(e){
+            $("#imgPreview").attr('src', e.target.result).width('auto').height(100)
+            $(`label[for='image']+`).attr('style', 'height: 120px')
+          }
+          reader.readAsDataURL(input.files[0]);
+        }
+      }
+      $('#img').change(function(){
+          readUrl(this);
+      })

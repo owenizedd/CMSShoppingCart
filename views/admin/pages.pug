@@ -35,10 +35,12 @@ html(lang="en")
     include ../includes/adminfooter.pug
     script(src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js")
     script. 
+      //- create sortable list and send to post each time sortable change.
       $('tbody').sortable({
         placeholder: "ui-state-highlight",
         update: function(){
           var ids = $('tbody').sortable("serialize");
+          console.log(ids);
           var url = "/admin/reorder-page";
           $.post(url, ids);
         }

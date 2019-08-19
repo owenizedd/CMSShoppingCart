@@ -4,30 +4,37 @@ nav.navbar.navbar-expand-md.navbar-dark.bg-dark
     span.navbar-toggler-icon
   #navbarsExampleDefault.collapse.navbar-collapse
     ul.navbar-nav.mr-auto
-      li.nav-item.active
+      li.nav-item
         a.nav-link(href='/admin/') Pages
           span.sr-only (current)
       li.nav-item
-        a.nav-link(href='#') Link
+        a.nav-link(href='/categories') Categories
       li.nav-item
-        a.nav-link.disabled(href='#') Disabled
+        a.nav-link(href='/products') Products 
       li.nav-item.dropdown
         a#dropdown01.nav-link.dropdown-toggle(href='http://example.com' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false') Dropdown
         .dropdown-menu(aria-labelledby='dropdown01')
           a.dropdown-item(href='#') Action
           a.dropdown-item(href='#') Another action
+          .dropdown-divider
           a.dropdown-item(href='#') Something else here
     form.form-inline.my-2.my-lg-0
       input.form-control.mr-sm-2(type='text' placeholder='Search' aria-label='Search')
       button.btn.btn-outline-success.my-2.my-sm-0(type='submit') Search
 
-if messages
-  each item in messages
-    div.alert.alert-danger= item
+if infos
+  for info in infos
+    div.alert.alert-info #{ info }
+if errs
+  for error, i in errs
+    div.alert.alert-danger #{ error }
 
 if errors
   each item in errors
     if color_notif
       div(class='alert '+color_notif)= item.msg
     else 
-      div.alert.alert-danger= item.msg + ' for ' + item.param
+      if (item.param)
+        div.alert.alert-danger= item.msg + ' for ' + item.param
+      else
+        div.alert.alert-danger= item.msg
