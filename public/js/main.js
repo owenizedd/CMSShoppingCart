@@ -7,4 +7,7 @@
   $('.delete-category').click( ()=> {
     if (!confirm("Are you sure to delete this category?")) return false;
   })
+  $('.delete-product').click( ()=>{
+    if (!confirm("Are you sure to delete this product?")) return false;
+  })
 }());
