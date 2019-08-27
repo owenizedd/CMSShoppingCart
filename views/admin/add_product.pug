@@ -11,7 +11,7 @@ html(lang="en")
       br
       form(action="/products/add-product", method="post", enctype="multipart/form-data")
         div(class="form-group")
-          label(for="title") Title
+          label.bmd-label-floating(for="title") Title
           input(type="text" class="form-control" name="title" value=title placeholder="Product Title") 
         div(class="form-group")
           label(for="description") Description
@@ -28,7 +28,7 @@ html(lang="en")
           label(for="image") Image 
           div.form-control
             input(name="image", type="file", id="img")
-            img(src="#", id="imgPreview", alt="")
+            img(src="#", id="imgPreview", alt="", class="image-small")
         button(type="submit" class="btn btn-primary") Submit
     include ../includes/adminfooter.pug
 
@@ -37,7 +37,7 @@ html(lang="en")
         if (input.files && input.files[0]){
           var reader = new FileReader();
           reader.onload = function(e){
-            $("#imgPreview").attr('src', e.target.result).width('auto').height(100)
+            $("#imgPreview").attr('src', e.target.result)
             $(`label[for='image']+`).attr('style', 'height: 120px')
           }
           reader.readAsDataURL(input.files[0]);

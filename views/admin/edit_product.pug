@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+html(lang="en")
+  include ../includes/adminheader.pug
+  body
+    include ../includes/nav.pug
+    
+    main(role="main" class="container")
+      h2(class="page-title") Edit a product
+      a(href="/products" class="btn btn-secondary") Back to all product
+      br
+      br
+      form(action="/products/edit-product?_method=PUT", method="post", enctype="multipart/form-data")
+        input(type="hidden" name="id" value=id)
+        input(type="hidden" name="oldImage" value=image)
+        div(class="form-group")
+          label.bmd-label-floating(for="title") Title
+          input(type="text" class="form-control" name="title" value=title placeholder="Product Title") 
+        div(class="form-group")
+          label(for="description") Description
+          textarea(class="form-control" cols="30" rows="10" name="description" id='ta' value=description placeholder="Product Description") #{description} 
+        div(class="form-group")
+          label(for="price") Price 
+          input(type="text" class="form-control" name="price" value=price placeholder="Product Price")
+        div.form-group
+          label(for="category") Category
+          select(name="category", class="form-control")
+            each cat in categories
+              option(value=cat.slug)= cat.title
+        div.form-group
+          p Current Image
+          if !image
+            img(src="/imgs/no-photo.jpg")
+          else
+            img(src=`/product_images/${id}/${image}` style="border: 1px solid rgba(0,0,0,.2)")
+        div.form-group
+          label(for="image") Upload a new Image 
+          div.form-control.d-flex.align-items-center
+            input(name="image", type="file", id="img")
+            img(src="#", id="imgPreview", alt="", style="display: none")
+        button(type="submit" class="btn btn-primary") Submit
+      
+      link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.5.1/basic.css")
+      link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.5.1/dropzone.css")
+      script(src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.5.1/dropzone.js")
+      
+      br
+      p Gallery Images Upload
+      ul.gallery
+        each image in galleryFiles
+          if image!="thumbs"
+            img(class="images-gallery-thumb" src=`/product_images/${id}/gallery/thumbs/${image}` style="margin: 0 5px;border: 1px solid rgba(0,0,0,.2)")
+      br
+      br
+      form.dropzone(action="/products/gallery-images/" + id, method="post" enctype="multipart/form-data", id="dropzone-form")
+        .fallback
+          input(type="file" name="file" multiple)
+          input(type="submit", value="Upload")
+    include ../includes/adminfooter.pug
+
+    script.
+      function readUrl(input){
+        if (input.files && input.files[0]){
+          var reader = new FileReader();
+          reader.onload = function(e){
+            $("#imgPreview").attr('src', e.target.result).attr('style', 'width: auto; height: 100px; display: block')
+            $(`label[for='image']+`).attr('style', 'height: 120px')
+          }
+          reader.readAsDataURL(input.files[0]);
+        }
+      }
+      $('#img').change(function(){
+          readUrl(this);
+      })
+
+      $('select')[0].value = #{'\'' + category + '\'' }
+
+      Dropzone.options.dropzoneForm = {
+        acceptedFiles : "image/*",
+        init: function(){
+          this.on('queuecomplete', function(){
+            iziToast.success({
+              title: 'OK',
+              message: 'Successfully uploaded the gallery images!',
+              onClosing: function(){
+                location.reload()
+              }
+            })
+          })
+        }
+      }
+      

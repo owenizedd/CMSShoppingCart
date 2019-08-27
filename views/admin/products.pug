@@ -33,7 +33,7 @@ html(lang="en")
                   td= prod.category
                   td
                     if !prod.image
-                      img(src="imgs/noimage.jpg")
+                      img(src="/imgs/no-photo.jpg")
                     else
                       img(src=`/product_images/${prod._id}/${prod.image}`)
                   td
